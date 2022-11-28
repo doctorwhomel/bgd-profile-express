@@ -1,19 +1,30 @@
-const express = require("express");
-const morgan = require("morgan");
-const gameRouter = require("./routes/gameRouter.js");
-const artistRouter = require("./routes/artistRouter");
-const studioRouter = require("./routes/studioRouter");
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+const logger = require("morgan");
+const gameRouter = require("./routes/gameRouter");
+//const artistRouter = require("./routes/promotionRouter");
+//const studioRouter = require("./routes/partnerRouter");
+
+const mongoose = require("mongoose");
+const url = "mongodb://localhost:27017/nucampsite";
+const connect = mongoose.connect(url, {
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const hostname = "localhost";
 const port = 3000;
 
 const app = express();
-app.use(morgan("dev"));
+app.use(logger("dev"));
 app.use(express.json());
 
 app.use("/games", gameRouter);
-app.use("/artists", artistRouter);
-app.use("/studios", studioRouter);
+//app.use("/artists", artistRouter);
+//app.use("/studios", studioRouter);
 
 app.use(express.static(__dirname + "/public"));
 
